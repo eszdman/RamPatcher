@@ -4,323 +4,76 @@
 
 
 # static fields
-.field private static TAG:Ljava/lang/String;
+.field private static final TAG:Ljava/lang/String; = "PatcherSession"
 
-.field private static sharpenAddr:J
+.field public static patcherSession:Lcom/eszdman/rampatcher/PatcherSession;
 
 
 # instance fields
-.field private exportAddr:J
-
-.field private exportname:Ljava/lang/String;
-
-.field private libname:Ljava/lang/String;
-
-.field private libraryPointer:J
+.field addreses:Lcom/eszdman/rampatcher/PatcherAddreses;
 
 
 # direct methods
-.method static constructor <clinit>()V
-    .registers 2
-
-    .prologue
-    .line 6
-    const-string v0, "PatcherSession"
-
-    sput-object v0, Lcom/eszdman/rampatcher/PatcherSession;->TAG:Ljava/lang/String;
-
-    .line 13
-    const-wide/32 v0, 0x105696c
-
-    sput-wide v0, Lcom/eszdman/rampatcher/PatcherSession;->sharpenAddr:J
-
-    return-void
-.end method
-
 .method public constructor <init>()V
-    .registers 10
+    .registers 7
 
     .prologue
-    const/4 v8, 0x4
-
-    .line 14
+    .line 9
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    .line 8
-    const-string v2, "libgcastartup.so"
+    .line 10
+    const-string v3, "rampatcher"
 
-    iput-object v2, p0, Lcom/eszdman/rampatcher/PatcherSession;->libname:Ljava/lang/String;
+    invoke-static {v3}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V
 
-    .line 9
-    const-string v2, "Java_com_google_android_apps_camera_jni_eisutil_FrameUtilNative_convertNV21ToNV12"
-
-    iput-object v2, p0, Lcom/eszdman/rampatcher/PatcherSession;->exportname:Ljava/lang/String;
+    .line 11
+    sput-object p0, Lcom/eszdman/rampatcher/PatcherSession;->patcherSession:Lcom/eszdman/rampatcher/PatcherSession;
 
     .line 12
-    const-wide/32 v2, 0xd1da50
+    new-instance v3, Lcom/eszdman/rampatcher/PatcherAddreses;
 
-    iput-wide v2, p0, Lcom/eszdman/rampatcher/PatcherSession;->exportAddr:J
+    invoke-direct {v3}, Lcom/eszdman/rampatcher/PatcherAddreses;-><init>()V
+
+    iput-object v3, p0, Lcom/eszdman/rampatcher/PatcherSession;->addreses:Lcom/eszdman/rampatcher/PatcherAddreses;
+
+    .line 13
+    iget-object v3, p0, Lcom/eszdman/rampatcher/PatcherSession;->addreses:Lcom/eszdman/rampatcher/PatcherAddreses;
+
+    iget-object v3, v3, Lcom/eszdman/rampatcher/PatcherAddreses;->libName:Ljava/lang/String;
+
+    invoke-direct {p0, v3}, Lcom/eszdman/rampatcher/PatcherSession;->ReadyToPatch(Ljava/lang/String;)V
+
+    .line 14
+    iget-object v3, p0, Lcom/eszdman/rampatcher/PatcherSession;->addreses:Lcom/eszdman/rampatcher/PatcherAddreses;
+
+    iget-object v3, v3, Lcom/eszdman/rampatcher/PatcherAddreses;->exportName:Ljava/lang/String;
+
+    invoke-direct {p0, v3}, Lcom/eszdman/rampatcher/PatcherSession;->getLibraryOffset(Ljava/lang/String;)J
+
+    move-result-wide v0
 
     .line 15
-    const-string v2, "rampatcher"
+    .local v0, "memoryPointer":J
+    iget-object v3, p0, Lcom/eszdman/rampatcher/PatcherSession;->addreses:Lcom/eszdman/rampatcher/PatcherAddreses;
 
-    invoke-static {v2}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V
+    invoke-virtual {v3, v0, v1}, Lcom/eszdman/rampatcher/PatcherAddreses;->InsertMemoryAddr(J)V
 
     .line 16
-    const-string v2, "gcastartup"
+    const-string v3, "PatcherSession"
 
-    invoke-static {v2}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V
-
-    .line 17
-    iget-object v2, p0, Lcom/eszdman/rampatcher/PatcherSession;->libname:Ljava/lang/String;
-
-    invoke-direct {p0, v2}, Lcom/eszdman/rampatcher/PatcherSession;->ReadyToPatch(Ljava/lang/String;)V
-
-    .line 18
-    invoke-virtual {p0}, Lcom/eszdman/rampatcher/PatcherSession;->getNewPointer()V
-
-    .line 19
-    sget-object v2, Lcom/eszdman/rampatcher/PatcherSession;->TAG:Ljava/lang/String;
-
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "methodPointer:"
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v3
-
-    iget-wide v4, p0, Lcom/eszdman/rampatcher/PatcherSession;->libraryPointer:J
-
-    invoke-virtual {v3, v4, v5}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
-
-    move-result-object v3
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-static {v2, v3}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 20
-    sget-object v2, Lcom/eszdman/rampatcher/PatcherSession;->TAG:Ljava/lang/String;
-
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "gcamPointer:"
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v3
-
-    iget-wide v4, p0, Lcom/eszdman/rampatcher/PatcherSession;->libraryPointer:J
-
-    iget-wide v6, p0, Lcom/eszdman/rampatcher/PatcherSession;->exportAddr:J
-
-    sub-long/2addr v4, v6
-
-    invoke-virtual {v3, v4, v5}, Ljava/lang/StringBuilder;->append(J)Ljava/lang/StringBuilder;
-
-    move-result-object v3
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-static {v2, v3}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 21
-    iget-wide v2, p0, Lcom/eszdman/rampatcher/PatcherSession;->libraryPointer:J
-
-    iget-wide v4, p0, Lcom/eszdman/rampatcher/PatcherSession;->exportAddr:J
-
-    sub-long v0, v2, v4
-
-    .line 22
-    .local v0, "startLibAddr":J
-    sget-object v2, Lcom/eszdman/rampatcher/PatcherSession;->TAG:Ljava/lang/String;
-
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "gcamRegion:"
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v3
-
-    iget-wide v4, p0, Lcom/eszdman/rampatcher/PatcherSession;->libraryPointer:J
-
-    const/16 v6, 0xa
-
-    invoke-direct {p0, v4, v5, v6}, Lcom/eszdman/rampatcher/PatcherSession;->readRegionRight(JI)Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v3
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-static {v2, v3}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 23
-    sget-object v2, Lcom/eszdman/rampatcher/PatcherSession;->TAG:Ljava/lang/String;
-
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "sharpening "
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v3
-
-    sget-wide v4, Lcom/eszdman/rampatcher/PatcherSession;->sharpenAddr:J
-
-    add-long/2addr v4, v0
-
-    invoke-direct {p0, v4, v5, v8}, Lcom/eszdman/rampatcher/PatcherSession;->readRegionRight(JI)Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v3
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-static {v2, v3}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 24
-    sget-wide v2, Lcom/eszdman/rampatcher/PatcherSession;->sharpenAddr:J
-
-    add-long/2addr v2, v0
-
-    const-string v4, "0801E8D2"
-
-    invoke-static {v4}, Lcom/eszdman/rampatcher/PatcherSession;->String2Byte(Ljava/lang/String;)[B
-
-    move-result-object v4
-
-    invoke-direct {p0, v2, v3, v4}, Lcom/eszdman/rampatcher/PatcherSession;->setBytes(J[B)V
-
-    .line 25
-    sget-object v2, Lcom/eszdman/rampatcher/PatcherSession;->TAG:Ljava/lang/String;
-
-    new-instance v3, Ljava/lang/StringBuilder;
-
-    invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v4, "after patch sharpening "
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v3
-
-    sget-wide v4, Lcom/eszdman/rampatcher/PatcherSession;->sharpenAddr:J
-
-    add-long/2addr v4, v0
-
-    invoke-direct {p0, v4, v5, v8}, Lcom/eszdman/rampatcher/PatcherSession;->readRegionRight(JI)Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-virtual {v3, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v3
-
-    invoke-virtual {v3}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v3
-
-    invoke-static {v2, v3}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
-
-    .line 26
-    invoke-direct {p0}, Lcom/eszdman/rampatcher/PatcherSession;->PatchDone()V
-
-    .line 27
-    return-void
-.end method
-
-.method private native PatchDone()V
-.end method
-
-.method private native ReadyToPatch(Ljava/lang/String;)V
-.end method
-
-.method private static String2Byte(Ljava/lang/String;)[B
-    .registers 7
-    .param p0, "in"    # Ljava/lang/String;
-
-    .prologue
-    .line 29
-    invoke-virtual {p0}, Ljava/lang/String;->toCharArray()[C
-
-    move-result-object v0
-
-    .line 30
-    .local v0, "i":[C
-    array-length v4, v0
-
-    div-int/lit8 v4, v4, 0x2
-
-    new-array v3, v4, [B
-
-    .line 31
-    .local v3, "output":[B
-    const/4 v2, 0x0
-
-    .local v2, "k":I
-    :goto_a
-    array-length v4, v0
-
-    if-ge v2, v4, :cond_43
-
-    .line 32
-    div-int/lit8 v4, v2, 0x2
-
-    aget-byte v5, v3, v4
-
-    add-int/lit8 v5, v5, -0x80
-
-    int-to-byte v5, v5
-
-    aput-byte v5, v3, v4
-
-    .line 33
     new-instance v4, Ljava/lang/StringBuilder;
 
     invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
 
-    aget-char v5, v0, v2
-
-    invoke-static {v5}, Ljava/lang/Character;->toString(C)Ljava/lang/String;
-
-    move-result-object v5
+    const-string v5, "libname:"
 
     invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     move-result-object v4
 
-    add-int/lit8 v5, v2, 0x1
+    iget-object v5, p0, Lcom/eszdman/rampatcher/PatcherSession;->addreses:Lcom/eszdman/rampatcher/PatcherAddreses;
 
-    aget-char v5, v0, v5
-
-    invoke-static {v5}, Ljava/lang/Character;->toString(C)Ljava/lang/String;
-
-    move-result-object v5
+    iget-object v5, v5, Lcom/eszdman/rampatcher/PatcherAddreses;->libName:Ljava/lang/String;
 
     invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
@@ -328,31 +81,33 @@
 
     invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    move-result-object v1
+    move-result-object v4
 
-    .line 34
-    .local v1, "inp":Ljava/lang/String;
-    div-int/lit8 v4, v2, 0x2
+    invoke-static {v3, v4}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
 
-    const/16 v5, 0x10
+    .line 18
+    new-instance v2, Lcom/eszdman/rampatcher/PatchParameters;
 
-    invoke-static {v1, v5}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;I)I
+    invoke-direct {v2}, Lcom/eszdman/rampatcher/PatchParameters;-><init>()V
 
-    move-result v5
+    .line 19
+    .local v2, "patchParameters":Lcom/eszdman/rampatcher/PatchParameters;
+    invoke-virtual {v2}, Lcom/eszdman/rampatcher/PatchParameters;->FillParameters()V
 
-    int-to-byte v5, v5
+    .line 20
+    invoke-virtual {p0, v2}, Lcom/eszdman/rampatcher/PatcherSession;->PatchAll(Lcom/eszdman/rampatcher/PatchParameters;)V
 
-    aput-byte v5, v3, v4
+    .line 21
+    invoke-direct {p0}, Lcom/eszdman/rampatcher/PatcherSession;->PatchDone()V
 
-    .line 31
-    add-int/lit8 v2, v2, 0x2
+    .line 22
+    return-void
+.end method
 
-    goto :goto_a
+.method private native PatchDone()V
+.end method
 
-    .line 36
-    .end local v1    # "inp":Ljava/lang/String;
-    :cond_43
-    return-object v3
+.method private native ReadyToPatch(Ljava/lang/String;)V
 .end method
 
 .method private native getLibraryOffset(Ljava/lang/String;)J
@@ -376,24 +131,86 @@
 .method private native setInt(JI)V
 .end method
 
-.method private native test()V
-.end method
-
 
 # virtual methods
-.method public getNewPointer()V
-    .registers 3
+.method public PatchAll(Lcom/eszdman/rampatcher/PatchParameters;)V
+    .registers 7
+    .param p1, "patchParameters"    # Lcom/eszdman/rampatcher/PatchParameters;
 
     .prologue
-    .line 39
-    iget-object v0, p0, Lcom/eszdman/rampatcher/PatcherSession;->exportname:Ljava/lang/String;
+    const/4 v4, 0x4
 
-    invoke-direct {p0, v0}, Lcom/eszdman/rampatcher/PatcherSession;->getLibraryOffset(Ljava/lang/String;)J
+    .line 24
+    const-string v0, "PatcherSession"
 
-    move-result-wide v0
+    new-instance v1, Ljava/lang/StringBuilder;
 
-    iput-wide v0, p0, Lcom/eszdman/rampatcher/PatcherSession;->libraryPointer:J
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 41
+    const-string v2, "sharpening "
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v1
+
+    iget-object v2, p0, Lcom/eszdman/rampatcher/PatcherSession;->addreses:Lcom/eszdman/rampatcher/PatcherAddreses;
+
+    iget-wide v2, v2, Lcom/eszdman/rampatcher/PatcherAddreses;->sharpeningAddres:J
+
+    invoke-direct {p0, v2, v3, v4}, Lcom/eszdman/rampatcher/PatcherSession;->readRegionRight(JI)Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v1
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 25
+    iget-object v0, p0, Lcom/eszdman/rampatcher/PatcherSession;->addreses:Lcom/eszdman/rampatcher/PatcherAddreses;
+
+    iget-wide v0, v0, Lcom/eszdman/rampatcher/PatcherAddreses;->sharpeningAddres:J
+
+    iget-object v2, p1, Lcom/eszdman/rampatcher/PatchParameters;->sharpeningValue:[B
+
+    invoke-direct {p0, v0, v1, v2}, Lcom/eszdman/rampatcher/PatcherSession;->setBytes(J[B)V
+
+    .line 26
+    const-string v0, "PatcherSession"
+
+    new-instance v1, Ljava/lang/StringBuilder;
+
+    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v2, "after patch sharpening "
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v1
+
+    iget-object v2, p0, Lcom/eszdman/rampatcher/PatcherSession;->addreses:Lcom/eszdman/rampatcher/PatcherAddreses;
+
+    iget-wide v2, v2, Lcom/eszdman/rampatcher/PatcherAddreses;->sharpeningAddres:J
+
+    invoke-direct {p0, v2, v3, v4}, Lcom/eszdman/rampatcher/PatcherSession;->readRegionRight(JI)Ljava/lang/String;
+
+    move-result-object v2
+
+    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v1
+
+    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v1
+
+    invoke-static {v0, v1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 28
     return-void
 .end method
