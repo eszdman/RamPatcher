@@ -96,10 +96,6 @@ Java_com_eszdman_rampatcher_PatcherSession_setInt(JNIEnv *env, jobject thiz, jlo
     *(jint*)(char*)(addr) = in;
 }extern "C"
 JNIEXPORT void JNICALL
-Java_com_eszdman_rampatcher_PatcherSession_test(JNIEnv *env, jobject thiz) {
-
-}extern "C"
-JNIEXPORT void JNICALL
 Java_com_eszdman_rampatcher_PatcherSession_PatchDone(JNIEnv *env, jobject thiz) {
     dlclose(libhandle);
 }extern "C"

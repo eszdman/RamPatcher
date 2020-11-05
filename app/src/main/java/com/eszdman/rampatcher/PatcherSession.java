@@ -35,5 +35,4 @@ public class PatcherSession {
     private native void setFloat(long addr,float in);
     private native void setDouble(long addr,double in);
     private native void setInt(long addr,int in);
-    private native void test();
 }
