@@ -7,10 +7,14 @@ public class PatcherSession {
     private static final String TAG = "PatcherSession";
     PatcherAddreses addreses;
     public PatcherSession() {
-        patcherSession = this;
         System.loadLibrary("rampatcher");
+        patcherSession = this;
+        addreses = new PatcherAddreses();
         ReadyToPatch(addreses.libName);
-        addreses = new PatcherAddreses(getLibraryOffset(addreses.exportName));
+        long memoryPointer = getLibraryOffset(addreses.exportName);
+        addreses.InsertMemoryAddr(memoryPointer);
+        Log.d(TAG,"libname:"+addreses.libName);
+
         PatchParameters patchParameters = new PatchParameters();
         patchParameters.FillParameters();
         PatchAll(patchParameters);

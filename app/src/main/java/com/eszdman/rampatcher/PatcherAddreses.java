@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
 public class PatcherAddreses {
+    private final static String TAG = "PatcherAddreses";
     String libName;
     String exportName;
     long exportAddres;
@@ -18,8 +19,7 @@ public class PatcherAddreses {
     long sharpeningAddres;
 
     Properties properties;
-    PatcherAddreses(long memoryPointer){
-        libStartAddres = memoryPointer;
+    PatcherAddreses(){
         properties = new Properties();
         Context context = getApplicationUsingReflection();
         try {
@@ -30,12 +30,26 @@ public class PatcherAddreses {
         }
         libName = properties.getProperty("libName");
         exportName = properties.getProperty("exportName");
+        Log.d(TAG,"exportName:"+exportName);
 
-        exportAddres = ReadAddr("exportAddres");
+
+    }
+    public void InsertMemoryAddr(long memoryPointer){
+        libStartAddres = memoryPointer;
+        exportAddres = ReadLong(properties.getProperty("exportAddres"));
+        Log.d(TAG,"exportAddres:"+exportAddres);
+        libStartAddres-=exportAddres;
         sharpeningAddres = ReadAddr("sharpeningAddres");
     }
+    private long ReadLong(String in){
+        if(in.contains("0x")){
+            in = in.replace("0x","");
+            return Long.parseLong(in,16);
+        }
+        return Long.parseLong(in);
+    }
     private long ReadAddr(String propertyName){
-        return Long.parseLong(propertyName)+libStartAddres;
+       return ReadLong(properties.getProperty(propertyName))+libStartAddres;
     }
     @SuppressLint("PrivateApi")
     public static Application getApplicationUsingReflection() {
