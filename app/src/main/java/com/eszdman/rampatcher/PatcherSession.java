@@ -11,7 +11,9 @@ public class PatcherSession {
         System.loadLibrary("rampatcher");
         ReadyToPatch(addreses.libName);
         addreses = new PatcherAddreses(getLibraryOffset(addreses.exportName));
-        PatchAll(new PatchParameters());
+        PatchParameters patchParameters = new PatchParameters();
+        patchParameters.FillParameters();
+        PatchAll(patchParameters);
         PatchDone();
     }
     public void PatchAll(PatchParameters patchParameters){
