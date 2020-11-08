@@ -33,7 +33,7 @@ public class PatcherAddreses {
         properties = new Properties();
         Context context = getApplicationUsingReflection();
         try {
-            properties.load(context.getResources().openRawResource(R.raw.rampatcher));
+            properties.load(context.getResources().openRawResource(R.raw.rampatcher80018));
         } catch (IOException e) {
             Log.e("PatcherAddreses","Error at loading properties");
             e.printStackTrace();

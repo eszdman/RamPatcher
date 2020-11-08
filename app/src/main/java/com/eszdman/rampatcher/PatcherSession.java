@@ -29,14 +29,13 @@ public class PatcherSession {
         patchBytes(addreses.saturationAddres,patchParameters.saturationValue);
     }
     private void patchBytes(long addr, byte[] in){
-        if(in != null) {
+        if(in != null && addr != 0) {
             if(DEBUG) Log.d(TAG,"Patch before: "+readRegionRight(addreses.sharpeningAddres,in.length));
             setBytes(addr,in);
             if(DEBUG) Log.d(TAG,"Patch after: "+readRegionRight(addreses.sharpeningAddres,in.length));
         } else {
             if(DEBUG) Log.d(TAG,"NullPtr at:"+addr);
         }
-
     }
     private native void ReadyToPatch(String libname);
     private native void PatchDone();
