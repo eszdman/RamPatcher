@@ -1,10 +1,18 @@
 package com.eszdman.rampatcher;
 
+import com.SDE.GetMenuValues;
+
 public class PatchParameters {
     byte[] sharpeningValue;
 
     public void FillParameters(){
-        sharpeningValue = String2Byte("0801E8D2");
+        //sharpeningValue = String2Byte("0801E8D2");
+        sharpeningValue = fromKey("lib_sharpness_key");
+        
+    }
+
+    private static byte[] fromKey(String keyName){
+        return String2Byte(GetMenuValues.getString(keyName));
     }
     private static byte[] String2Byte(String in){
         char[] i = in.toCharArray();

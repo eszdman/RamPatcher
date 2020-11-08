@@ -5,6 +5,7 @@ import android.util.Log;
 public class PatcherSession {
     public static PatcherSession patcherSession;
     private static final String TAG = "PatcherSession";
+    public static final boolean DEBUG = true;
     PatcherAddreses addreses;
     public PatcherSession() {
         System.loadLibrary("rampatcher");
@@ -21,9 +22,9 @@ public class PatcherSession {
         PatchDone();
     }
     public void PatchAll(PatchParameters patchParameters){
-        Log.d(TAG,"sharpening "+readRegionRight(addreses.sharpeningAddres,4));
+        if(DEBUG) Log.d(TAG,"sharpening "+readRegionRight(addreses.sharpeningAddres,4));
         setBytes(addreses.sharpeningAddres,patchParameters.sharpeningValue);
-        Log.d(TAG,"after patch sharpening "+readRegionRight(addreses.sharpeningAddres,4));
+        if(DEBUG) Log.d(TAG,"after patch sharpening "+readRegionRight(addreses.sharpeningAddres,4));
 
     }
     private native void ReadyToPatch(String libname);
