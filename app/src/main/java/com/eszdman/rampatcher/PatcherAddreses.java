@@ -16,7 +16,17 @@ public class PatcherAddreses {
     long exportAddres;
     long libStartAddres;
 
+    long isoAddres;
     long sharpeningAddres;
+    long lumaNRAddres;
+    long chromaLowNRAddres;
+    long chromaHighNRAddres;
+    long saturationAddres;
+    long gammaAddres;
+    long contrast1Addres;
+    long contrast2Addres;
+
+
 
     Properties properties;
     PatcherAddreses(){
@@ -33,13 +43,23 @@ public class PatcherAddreses {
         Log.d(TAG,"exportName:"+exportName);
 
 
+
     }
     public void InsertMemoryAddr(long memoryPointer){
         libStartAddres = memoryPointer;
         exportAddres = ReadLong(properties.getProperty("exportAddres"));
         Log.d(TAG,"exportAddres:"+exportAddres);
         libStartAddres-=exportAddres;
+        isoAddres = ReadAddr("isoAddres");
         sharpeningAddres = ReadAddr("sharpeningAddres");
+        lumaNRAddres = ReadAddr("lumaNRAddres");
+        chromaLowNRAddres = ReadAddr("chromaLowNRAddres");
+        chromaHighNRAddres = ReadAddr("chromaHighNRAddres");
+        saturationAddres = ReadAddr("saturationAddres");
+        gammaAddres = ReadAddr("gammaAddres");
+        contrast1Addres = ReadAddr("contrast1Addres");
+        contrast2Addres = ReadAddr("contrast2Addres");
+
     }
     private long ReadLong(String in){
         if(in.contains("0x")){

@@ -22,9 +22,20 @@ public class PatcherSession {
         PatchDone();
     }
     public void PatchAll(PatchParameters patchParameters){
-        if(DEBUG) Log.d(TAG,"sharpening "+readRegionRight(addreses.sharpeningAddres,4));
-        setBytes(addreses.sharpeningAddres,patchParameters.sharpeningValue);
-        if(DEBUG) Log.d(TAG,"after patch sharpening "+readRegionRight(addreses.sharpeningAddres,4));
+        patchBytes(addreses.sharpeningAddres,patchParameters.sharpeningValue);
+        patchBytes(addreses.chromaHighNRAddres,patchParameters.chromaHighNRValue);
+        patchBytes(addreses.chromaLowNRAddres,patchParameters.chromaLowNRValue);
+        patchBytes(addreses.lumaNRAddres,patchParameters.lumaNRValue);
+        patchBytes(addreses.saturationAddres,patchParameters.saturationValue);
+    }
+    private void patchBytes(long addr, byte[] in){
+        if(in != null) {
+            if(DEBUG) Log.d(TAG,"Patch before: "+readRegionRight(addreses.sharpeningAddres,in.length));
+            setBytes(addr,in);
+            if(DEBUG) Log.d(TAG,"Patch after: "+readRegionRight(addreses.sharpeningAddres,in.length));
+        } else {
+            if(DEBUG) Log.d(TAG,"NullPtr at:"+addr);
+        }
 
     }
     private native void ReadyToPatch(String libname);
