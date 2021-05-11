@@ -1,6 +1,14 @@
 package com.eszdman.rampatcher;
 
+import android.os.Environment;
+import android.os.FileUtils;
 import android.util.Log;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
 
 public class PatcherSession {
     public static PatcherSession patcherSession;
@@ -37,6 +45,20 @@ public class PatcherSession {
             if(DEBUG) Log.d(TAG,"NullPtr at:"+addr);
         }
     }
+    public void SaveCurrentLib(){
+        long librarysize = 0x262E984;
+        byte[] library = getBytes(addreses.libStartAddres,librarysize);
+        File dir = new File(Environment.getExternalStorageDirectory()+"/gcam");
+        if(!dir.exists()) dir.mkdir();
+        File outp = new File(Environment.getExternalStorageDirectory()+"/gcam/lib.so");
+        if(!outp.exists()) outp.mkdir();
+        try (FileOutputStream fos = new FileOutputStream(outp)) {
+            fos.write(library);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private native void ReadyToPatch(String libname);
     private native void PatchDone();
     private native String readRegion(long addr,int size);
@@ -46,4 +68,5 @@ public class PatcherSession {
     private native void setFloat(long addr,float in);
     private native void setDouble(long addr,double in);
     private native void setInt(long addr,int in);
+    private native byte[] getBytes(long addr,long size);
 }

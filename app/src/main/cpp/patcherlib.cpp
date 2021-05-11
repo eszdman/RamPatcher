@@ -103,4 +103,14 @@ JNIEXPORT void JNICALL
 Java_com_eszdman_rampatcher_PatcherSession_ReadyToPatch(JNIEnv *env, jobject thiz,
                                                         jstring libname) {
     libhandle = dlopen((env->GetStringUTFChars(libname, nullptr)), RTLD_GLOBAL);
+}extern "C"
+JNIEXPORT jbyteArray JNICALL
+Java_com_eszdman_rampatcher_PatcherSession_getBytes(JNIEnv *env, jobject thiz, jlong addr,jlong size) {
+    auto* a = new jbyte[size];
+    for(long i = 0;i<size;i++){
+        a[i] = *(jbyte*)(addr+i);
+    }
+    jbyteArray ret = env->NewByteArray(size);
+    env->SetByteArrayRegion (ret, 0, size, a);
+    return ret;
 }
